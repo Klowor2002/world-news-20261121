@@ -103,6 +103,8 @@ def load_and_validate() -> tuple[bytes, int, int, str, str]:
         raise AssetError("missing JPEG end-of-image marker")
 
     width, height, sof = frame_dimensions(data)
+    if width == 0 or height == 0:
+        raise AssetError("frame has a zero dimension, not a real image")
     if width > DIM_LIMIT or height > DIM_LIMIT:
         raise AssetError(f"frame is {width}x{height}, limit is {DIM_LIMIT}px")
 
